@@ -6,8 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Zttp\Zttp;
-use Zttp\ZttpResponse;
 
 class FetchedStarWarsEntity extends Notification implements ShouldQueue
 {
@@ -52,11 +50,14 @@ class FetchedStarWarsEntity extends Notification implements ShouldQueue
         $entity = $this->getEntity();
 
         return (new MailMessage)
-                    ->line(sprintf(
-                        'Info about Star Wars entity [%1$s]', $entity['name'])
-                    )
-                    ->line(print_r($entity, true))
-                    ->action('More details', $entity['url']);
+            ->line(
+                sprintf(
+                    'Info about Star Wars entity [%1$s]',
+                    $entity['name']
+                )
+            )
+            ->line(print_r($entity, true))
+            ->action('More details', $entity['url']);
     }
 
     /**
