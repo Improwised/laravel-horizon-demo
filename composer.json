@@ -13,6 +13,7 @@
   "require": {
     "php": "^8.0",
     "fideloper/proxy": "^4.0",
+    "fruitcake/laravel-cors": "^3.0",
     "kitetail/zttp": "^0.6",
     "laravel/framework": "^8.0",
     "laravel/helpers": "^1.7",
