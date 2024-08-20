@@ -11,15 +11,15 @@
   "type": "project",
   "author": "JP Caparas <jp@jpcaparas.com>",
   "require": {
-    "php": "^8.0",
-    "fideloper/proxy": "^4.0",
+    "php": "^8.2",
     "fruitcake/laravel-cors": "^3.0",
     "kitetail/zttp": "^0.6",
-    "laravel/framework": "^8.0",
+    "laravel/framework": "^9.0",
     "laravel/helpers": "^1.7",
     "laravel/horizon": "^5.0",
     "laravel/legacy-factories": "^1.4",
-    "laravel/tinker": "^2.0"
+    "laravel/tinker": "^2.0",
+    "nunomaduro/collision": "^7.10"
   },
   "require-dev": {
     "filp/whoops": "^2.0",
