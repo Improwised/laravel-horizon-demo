@@ -44,21 +44,21 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'connection' => 'redis',
+                    'connection' => 'redis',
                 'queue' => ['default'],
-                'balance' => 'simple',
-                'processes' => 10,
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'minProcesses' => 1,
+                'maxProcesses' => 10,
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 3,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
-                'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
-                'processes' => 3,
-                'tries' => 3,
+                'maxProcesses' => 3,
             ],
         ],
     ],
