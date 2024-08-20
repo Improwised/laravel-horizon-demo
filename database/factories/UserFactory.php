@@ -1,7 +1,10 @@
 <?php
 
+namespace Database\Factories;
+
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use App\User; // Add this line to import the User class
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +17,7 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) { // Update the class reference
     static $password;
 
     return [
