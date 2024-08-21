@@ -44,7 +44,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                    'connection' => 'redis',
+                'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'auto',
                 'autoScalingStrategy' => 'time',
@@ -59,6 +59,11 @@ return [
         'local' => [
             'supervisor-1' => [
                 'maxProcesses' => 3,
+                'balance' => 'simple',
+                'maxProcesses' => 4,
+                'tries' => 5,
+                'timeout' => 1200,
+                'nice' => 0,
             ],
         ],
     ],
