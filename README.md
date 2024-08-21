@@ -1,6 +1,7 @@
 # Laravel Horizon Demo
 
-![laravel-horizon](http://i.imgur.com/US6hC7Ll.jpg)
+![laravel-horizon](https://github.com/user-attachments/assets/07a8ff5c-9257-4e2d-b450-851b9926bce2)
+
 
 Laravel Horizon provides an easy-to-use, interactive GUI to monitor and interact with Redis queues.
 
