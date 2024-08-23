@@ -9,8 +9,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Zttp\Zttp;
-use Zttp\ZttpResponse;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class FetchStarWarsEntity implements ShouldQueue
 {
@@ -63,19 +64,17 @@ class FetchStarWarsEntity implements ShouldQueue
         $headers = ['Content-Type' => 'application/json'];
         $url = sprintf(
             '%1$s/api/%2$s/%3$s',
-            self::API_URL, $this->getEntityType(),
+            self::API_URL,
+            $this->getEntityType(),
             $this->getEntityId()
         );
 
-        /**
-         * @var ZttpResponse $response
-         */
-        $response = Zttp::withHeaders($headers)->get($url);
+        $response = Http::withHeaders($headers)->get($url);
 
         if (empty($response) === true || 200 !== $response->status()) {
             $error = 'Failed to fetch Star Wars entity.';
 
-            \Log::error($error, [
+            Log::error($error, [
                 'url' => $url,
                 'response' => $response->json(),
                 'status' => $response->status(),

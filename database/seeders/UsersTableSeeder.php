@@ -1,6 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Seeder;
+use App\User; // Add this line to import the User class
 
 class UsersTableSeeder extends Seeder
 {
@@ -12,6 +16,6 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Rest of users
-        factory(App\User::class, 10)->create();
+        Factory(User::class, 10)->create();
     }
 }
