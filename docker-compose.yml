@@ -1,7 +1,47 @@
 version: "3.7"
 
 services:
+  horizondb:
+    platform: linux/x86_64
+    image: mysql:8
+    restart: unless-stopped
+    tty: true
+    ports:
+        - 3306:3306
+    expose:
+        - 3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    environment:
+        MYSQL_DATABASE: horizon
+        MYSQL_USER: vapor
+        MYSQL_PASSWORD: vapor
+        MYSQL_ROOT_PASSWORD: horizon
+        MYSQL_TCP_PORT: 3306
+    volumes:
+        - mysqldata8:/var/lib/mysql/
+
+
+  migration: 
+    depends_on:
+      horizondb:
+          condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: |
+      /bin/sh -c "
+        set -e
+        php artisan migrate --seed
+      "
   app:
+    depends_on:
+      migration:
+        condition: service_completed_successfully
     restart: always
     build:
       context: .
@@ -12,14 +52,37 @@ services:
       - "8000"
     env_file:
       - .env
-    volumes:
-      - ./:/app/
     command: |
-      /bin/bash -c "
+      /bin/sh -c "
         set -e
-        php artisan serve --host 0.0.0.0 &
+        php artisan serve --host 0.0.0.0
+      "
+
+  horizon:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: |
+      /bin/sh -c "
+        set -e
         php artisan horizon
       "
+  
+  dispatcher:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: |
+      /bin/sh -c '
+        set -e
+        while sleep 5; do php artisan tinker --execute="\App\Jobs\ExampleJob::dispatch()"; done
+      '
 
   redis:
     image: redis:alpine
@@ -35,3 +98,4 @@ services:
 
 volumes:
   redis_data:
+  mysqldata8:
