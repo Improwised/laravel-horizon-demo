@@ -59,6 +59,9 @@ services:
       "
 
   horizon:
+    depends_on:
+      migration:
+        condition: service_completed_successfully
     restart: always
     build:
       context: .
@@ -72,6 +75,9 @@ services:
       "
   
   dispatcher:
+    depends_on:
+      migration:
+        condition: service_completed_successfully
     restart: always
     build:
       context: .
