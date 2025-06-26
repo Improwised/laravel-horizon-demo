@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   horizondb:
     platform: linux/x86_64
@@ -7,27 +5,28 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-        - 3306:3306
+      - 3306:3306
     expose:
-        - 3306
+      - 3306
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
     environment:
-        MYSQL_DATABASE: horizon
-        MYSQL_USER: vapor
-        MYSQL_PASSWORD: vapor
-        MYSQL_ROOT_PASSWORD: horizon
-        MYSQL_TCP_PORT: 3306
+      MYSQL_DATABASE: horizon
+      MYSQL_USER: vapor
+      MYSQL_PASSWORD: vapor
+      MYSQL_ROOT_PASSWORD: horizon
+      MYSQL_TCP_PORT: 3306
     volumes:
-        - mysqldata8:/var/lib/mysql/
+      - mysqldata8:/var/lib/mysql/
 
-
+    networks:
+      - horizon
   migration: 
     depends_on:
       horizondb:
-          condition: service_healthy
+        condition: service_healthy
     build:
       context: .
       dockerfile: Dockerfile
@@ -38,6 +37,8 @@ services:
         set -e
         php artisan migrate --seed
       "
+    networks:
+      - horizon
   app:
     depends_on:
       migration:
@@ -57,7 +58,8 @@ services:
         set -e
         php artisan serve --host 0.0.0.0
       "
-
+    networks:
+      - horizon 
   horizon:
     depends_on:
       migration:
@@ -73,7 +75,8 @@ services:
         set -e
         php artisan horizon
       "
-  
+    networks:
+      - horizon
   dispatcher:
     depends_on:
       migration:
@@ -89,7 +92,8 @@ services:
         set -e
         while sleep 5; do php artisan tinker --execute="\App\Jobs\ExampleJob::dispatch()"; done
       '
-
+    networks:
+      - horizon
   redis:
     image: redis:alpine
     restart: always
@@ -101,7 +105,12 @@ services:
       - "6379"
     volumes:
       - redis_data:/data
+    networks:
+      - horizon
 
 volumes:
   redis_data:
   mysqldata8:
+
+networks:
+  horizon:
