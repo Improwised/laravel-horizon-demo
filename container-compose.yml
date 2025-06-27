@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     build:
       context: .
-      dockerfile: Dockerfile
+      containerfile: Containerfile
     env_file:
       - .env
     command: |
@@ -46,17 +46,17 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      containerfile: Containerfile
     ports:
-      - "8000:8000"
+      - "9000:9000"
     expose:
-      - "8000"
+      - "9000"
     env_file:
       - .env
     command: |
       /bin/sh -c "
         set -e
-        php artisan serve --host 0.0.0.0
+        php artisan serve --host 0.0.0.0 --port 9000
       "
     networks:
       - horizon 
@@ -67,7 +67,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      containerfile: Containerfile
     env_file:
       - .env
     command: |
@@ -84,7 +84,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      containerfile: Containerfile
     env_file:
       - .env
     command: |

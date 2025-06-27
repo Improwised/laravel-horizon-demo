@@ -6,7 +6,6 @@
 
 2. Run `cp .env.example .env`
 
-3. Run `docker compose up`
+3. Run `podman-compose up`
 
-4. Visit the Horizon dashboard at `http://localhost:8000/horizon`.
-
+4. Visit the Horizon dashboard at `http://localhost:9000/horizon`.
